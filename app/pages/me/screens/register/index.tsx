@@ -60,7 +60,7 @@ const RegisterScreen: React.FC = () => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setValue("avatar", result.assets[0].uri);
     }
   };

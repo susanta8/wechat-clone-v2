@@ -145,7 +145,7 @@ export const themeColor = {
   purple7: "#551DB0",
   purple8: "#3C108F",
   purple9: "#27066E",
-  purple10: "#1bold4D",
+  purple10: "#1B004D",
   magenta1: "#FFE8F1",
   magenta2: "#FDC2DB",
   magenta3: "#FB9DC7",

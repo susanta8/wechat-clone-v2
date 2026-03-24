@@ -2,7 +2,8 @@ import Toast from "@/component/base/Toast";
 import Divider from "@/component/complex/Divider";
 import ItemCard from "@/component/complex/ItemCard";
 import ArrowRightIcon from "@/icons/common/arrow-right.svg";
-import { themeColor } from "@/theme/light";
+import { themeColor as defaultThemeColor } from "@/theme/light";
+import { useTheme } from "@/theme/useTheme";
 import { useNavigation, useRouter } from "expo-router";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -13,17 +14,30 @@ import {
   View,
   Pressable,
   Platform,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
+
+const FESTIVALS = [
+  { key: "Diwali", emoji: "\uD83E\uDE94" },
+  { key: "Holi", emoji: "\uD83C\uDF08" },
+  { key: "Eid", emoji: "\u2B50" },
+  { key: "Christmas", emoji: "\uD83C\uDF84" },
+  { key: "Pongal", emoji: "\uD83C\uDF3E" },
+  { key: "Onam", emoji: "\uD83C\uDF3B" },
+  { key: "Navratri", emoji: "\uD83D\uDC83" },
+];
+
 const Discover = () => {
   const navigator = useNavigation();
   const { t } = useTranslation();
+  const { themeColor } = useTheme();
 
   const cardList = [
     {
       text: t("moments"),
       url: require("@/icons/discover/moments.jpeg"),
       onPressHandler: () => {
-        // router.push('pages/discover/moments/index')
         navigator.navigate("pages/discover/moments/index");
       },
     },
@@ -75,7 +89,60 @@ const Discover = () => {
     },
   ];
   return (
-    <SafeAreaView>
+    <ScrollView>
+      <View
+        style={{
+          margin: 8,
+          padding: 12,
+          backgroundColor: themeColor.fillColor,
+          borderRadius: 8,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: "bold",
+            color: themeColor.text5,
+            marginBottom: 8,
+          }}
+        >
+          {t("Festival Greetings")}
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={{ flexDirection: "row", gap: 8 }}>
+            {FESTIVALS.map((festival) => (
+              <TouchableOpacity
+                key={festival.key}
+                onPress={() => {
+                  Toast.success(t(festival.key) + " \uD83C\uDF89");
+                }}
+                style={{
+                  backgroundColor: themeColor.white,
+                  paddingHorizontal: 14,
+                  paddingVertical: 10,
+                  borderRadius: 20,
+                  alignItems: "center",
+                  minWidth: 80,
+                }}
+              >
+                <Text style={{ fontSize: 24, marginBottom: 2 }}>
+                  {festival.emoji}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: themeColor.text5,
+                    fontWeight: "500",
+                  }}
+                >
+                  {t(festival.key)}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+
       {cardList.map((card) => {
         const getDivider = () => {
           const gapFields = [
@@ -106,7 +173,7 @@ const Discover = () => {
                     <Image
                       style={{
                         marginLeft: 18,
-                        marginRight: 4, // marginVertical: 8,
+                        marginRight: 4,
                         width: 24,
                         height: 24,
                       }}
@@ -121,7 +188,7 @@ const Discover = () => {
           </View>
         );
       })}
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 export default Discover;
