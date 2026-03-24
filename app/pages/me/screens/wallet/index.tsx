@@ -115,6 +115,8 @@ const Wallet = () => {
     );
   };
 
+  // TODO: Replace with real UPI payment API call once backend supports it
+  // Currently a UI scaffold — no actual payment is processed
   const handleUpiPayment = () => {
     if (!upiId || !upiId.includes("@")) {
       Toast.fail(t("Enter UPI ID"));
@@ -124,13 +126,10 @@ const Wallet = () => {
       Toast.fail(t("Enter Amount"));
       return;
     }
-    Toast.loading(t("Loading"));
-    setTimeout(() => {
-      Toast.success(t("Transaction Successful"));
-      setUpiId("");
-      setUpiAmount("");
-      setShowUpiSection(false);
-    }, 1500);
+    Toast.info("Demo: UPI payments require backend integration. No real transaction will occur.");
+    setUpiId("");
+    setUpiAmount("");
+    setShowUpiSection(false);
   };
 
   return (

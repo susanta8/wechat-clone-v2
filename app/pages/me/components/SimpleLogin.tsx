@@ -158,20 +158,24 @@ export default () => {
     });
   }, []);
 
+  // TODO: Replace with real OTP API call (e.g. Firebase Auth, Twilio)
+  // Currently a UI scaffold — no SMS is actually sent
   const handleSendOtp = () => {
     if (!phoneNumber || phoneNumber.length < 10) {
       Toast.fail(t("Enter Phone Number"));
       return;
     }
+    Toast.info("Demo: OTP flow is a UI preview. Backend SMS integration required.");
     setOtpSent(true);
-    Toast.success(t("OTP Sent"));
   };
 
+  // TODO: Wire up to a real OTP verification endpoint once backend supports it
   const handleVerifyOtp = () => {
     if (!otpCode || otpCode.length < 4) {
       Toast.fail(t("Invalid OTP"));
       return;
     }
+    Toast.info("Demo: OTP verification requires backend integration. Using password login for now.");
     setLoadingStore({ loading: true, text: "Verifying..." });
     Keyboard.dismiss();
     fetch(config.apiDomain + "/api/user/register", {

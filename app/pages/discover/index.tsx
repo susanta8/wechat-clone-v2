@@ -2,7 +2,6 @@ import Toast from "@/component/base/Toast";
 import Divider from "@/component/complex/Divider";
 import ItemCard from "@/component/complex/ItemCard";
 import ArrowRightIcon from "@/icons/common/arrow-right.svg";
-import { themeColor as defaultThemeColor } from "@/theme/light";
 import { useTheme } from "@/theme/useTheme";
 import { useNavigation, useRouter } from "expo-router";
 import { router } from "expo-router";
