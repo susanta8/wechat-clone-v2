@@ -224,7 +224,6 @@ const Chats = () => {
           curConvo: {
             convoId: resultByGroupName._id,
             curReceiverInfo: { act: "group chat" },
-            convoMember: resultByGroupName.participants,
             ...resultByGroupName,
             convoMember: [userStore.userInfo],
           },
@@ -243,7 +242,7 @@ const Chats = () => {
     navigate.setOptions({
       headerLeft: () => <Entypo name="dots-two-horizontal" size={20} />,
       headerLeftContainerStyle: { paddingLeft: 12 },
-      headerTitle: "Weixin",
+      headerTitle: "DesiChat",
       headerRight: () => (
         <View style={{}}>
           <Popover

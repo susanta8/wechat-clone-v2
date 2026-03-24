@@ -1,4 +1,4 @@
-import { Pressable, SafeAreaView, Text, View, Image } from "react-native";
+import { Pressable, SafeAreaView, Text, View, Image, TextInput, TouchableOpacity } from "react-native";
 import { QRCode, Canvas } from "easyqrcode-react-native/QRCode";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import {
@@ -19,6 +19,7 @@ import WalletOutline from "@/icons/chats/wallet-outline.svg";
 import Loading from "@/component/base/Loading";
 import { getSize } from "utils";
 import { useConfigState } from "app/store/globalConfig";
+import Button from "@/component/base/Button/Button";
 
 const Wallet = () => {
   const { config } = useConfigState();
@@ -28,6 +29,9 @@ const Wallet = () => {
   const { t } = useTranslation();
   const { themeColor } = useTheme();
   const [wallet, setWallet] = useState({ balance: -1, miniFund: 0 });
+  const [showUpiSection, setShowUpiSection] = useState(false);
+  const [upiId, setUpiId] = useState("");
+  const [upiAmount, setUpiAmount] = useState("");
   useLayoutEffect(() => {
     const navigatorProps = useCommonNavigateProps({
       title: t("Service"),
@@ -80,7 +84,7 @@ const Wallet = () => {
             fontSize: 12,
           }}
         >
-          ¥ {amount}
+          {"\u20B9"} {amount}
         </Text>
       ) : (
         <Loading
@@ -110,8 +114,25 @@ const Wallet = () => {
       </View>
     );
   };
+
+  // TODO: Replace with real UPI payment API call once backend supports it
+  // Currently a UI scaffold — no actual payment is processed
+  const handleUpiPayment = () => {
+    if (!upiId || !upiId.includes("@")) {
+      Toast.fail(t("Enter UPI ID"));
+      return;
+    }
+    if (!upiAmount || Number(upiAmount) <= 0) {
+      Toast.fail(t("Enter Amount"));
+      return;
+    }
+    Toast.info("Demo: UPI payments require backend integration. No real transaction will occur.");
+    setUpiId("");
+    setUpiAmount("");
+    setShowUpiSection(false);
+  };
+
   return (
-    // <SafeAreaView>
     <ScrollView>
       <View
         style={{
@@ -141,6 +162,121 @@ const Wallet = () => {
           (Number(wallet?.balance).toFixed(2) || 5340300.03) as number
         )}
       </View>
+
+      <View
+        style={{
+          margin: 8,
+          padding: 16,
+          backgroundColor: themeColor.fillColor,
+          borderRadius: 8,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "bold",
+            color: themeColor.text5,
+            marginBottom: 12,
+          }}
+        >
+          {t("UPI Payment")}
+        </Text>
+        <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+          <TouchableOpacity
+            onPress={() => setShowUpiSection(!showUpiSection)}
+            style={{
+              backgroundColor: themeColor.primary,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+              borderRadius: 6,
+            }}
+          >
+            <Text style={{ color: themeColor.white, fontWeight: "bold" }}>
+              {t("Pay via UPI")}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              Toast.info(t("Scan & Pay"));
+            }}
+            style={{
+              backgroundColor: themeColor.white,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+              borderRadius: 6,
+              borderWidth: 1,
+              borderColor: themeColor.primary,
+            }}
+          >
+            <Text style={{ color: themeColor.primary, fontWeight: "bold" }}>
+              {t("Scan & Pay")}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              Toast.info(t("BharatQR"));
+            }}
+            style={{
+              backgroundColor: themeColor.white,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+              borderRadius: 6,
+              borderWidth: 1,
+              borderColor: themeColor.primary,
+            }}
+          >
+            <Text style={{ color: themeColor.primary, fontWeight: "bold" }}>
+              {t("BharatQR")}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {showUpiSection && (
+          <View style={{ marginTop: 16, gap: 12 }}>
+            <View>
+              <Text style={{ color: themeColor.text5, marginBottom: 4, fontSize: 14 }}>
+                {t("UPI ID")}
+              </Text>
+              <TextInput
+                style={{
+                  backgroundColor: themeColor.white,
+                  padding: 12,
+                  borderRadius: 6,
+                  fontSize: 16,
+                  color: themeColor.text5,
+                }}
+                placeholder="name@upi"
+                placeholderTextColor={themeColor.text2}
+                value={upiId}
+                onChangeText={setUpiId}
+              />
+            </View>
+            <View>
+              <Text style={{ color: themeColor.text5, marginBottom: 4, fontSize: 14 }}>
+                {t("Enter Amount")}
+              </Text>
+              <TextInput
+                style={{
+                  backgroundColor: themeColor.white,
+                  padding: 12,
+                  borderRadius: 6,
+                  fontSize: 16,
+                  color: themeColor.text5,
+                }}
+                placeholder={"\u20B9 0.00"}
+                placeholderTextColor={themeColor.text2}
+                keyboardType="numeric"
+                value={upiAmount}
+                onChangeText={setUpiAmount}
+              />
+            </View>
+            <Button type="primary" onPress={handleUpiPayment}>
+              {t("Pay Now")}
+            </Button>
+          </View>
+        )}
+      </View>
+
       {i18n.language === "cn" ? (
         <Pressable
           onPress={() => {
@@ -150,7 +286,6 @@ const Wallet = () => {
           <Image
             resizeMode="contain"
             style={{
-              // backgroundColor: "red",
               width: "auto",
               height: 350,
             }}
@@ -159,7 +294,6 @@ const Wallet = () => {
           <Image
             resizeMode="contain"
             style={{
-              // backgroundColor: "red",
               width: "auto",
               height: 710,
             }}
@@ -175,7 +309,6 @@ const Wallet = () => {
           <Image
             resizeMode="contain"
             style={{
-              // backgroundColor: "red",
               width: "auto",
               height: 445,
             }}
@@ -184,7 +317,6 @@ const Wallet = () => {
           <Image
             resizeMode="contain"
             style={{
-              // backgroundColor: "red",
               width: "auto",
               height: 630,
             }}
@@ -193,7 +325,6 @@ const Wallet = () => {
         </Pressable>
       )}
     </ScrollView>
-    // </SafeAreaView>
   );
 };
 export default Wallet;

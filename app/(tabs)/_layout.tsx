@@ -13,6 +13,7 @@ import DiscoverIcon from "@/icons/tabs/discover-active.svg";
 import MeActiveIcon from "@/icons/tabs/me-active.svg";
 import MeIcon from "@/icons/tabs/me.svg";
 import { useTranslation } from "react-i18next";
+import "../i18n";
 import ChatIcon from "@/icons/tabs/chats.svg";
 import ChatActiveIcon from "@/icons/tabs/chats-active.svg";
 // import Slot from "expo-router/Slot";
